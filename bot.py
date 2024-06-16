@@ -12,7 +12,7 @@ from logger_setup.logger_config import setup_logging
 
 bot_dir = os.path.abspath(os.path.dirname(__file__))
 
-setup_logging(f'{bot_dir}/log/furball.log')
+setup_logging(f'{bot_dir}/log/discord-bot.log')
 bot_logger = logging.getLogger()
 
 intents = discord.Intents.all()
