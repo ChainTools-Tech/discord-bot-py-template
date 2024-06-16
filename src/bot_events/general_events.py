@@ -1,36 +1,35 @@
-import logging
 import discord
 from discord.ext import commands
+import logging
 
-from config_loader.config_manager import config
 
-# Retrieve the root logger or a named logger if you prefer
-bot_logger = logging.getLogger(__name__)
-
-class GeneralEvents(commands.Cog):
-    def __init__(self, bot):
+class GeneralEvents(commands.Cog, name="General Events"):
+    def __init__(self, bot, config):
         self.bot = bot
+        self.config = config  # Store the passed config
+        self.logger = logging.getLogger(__name__)
 
     @commands.Cog.listener()
     async def on_ready(self):
-        guild = discord.utils.get(self.bot.guilds, name=config.discord_params['DISCORD_GUILD'])  # Adjust as necessary
-        bot_logger.info(
-            f'{self.bot.user.name} is connected to the following guild:\n'
-            f'{guild.name}(id: {guild.id})'
-        )
-
-        members = '\n - '.join([member.name for member in guild.members])
-        bot_logger.info(f'Guild members:\n - {members}')
+        guild_name = self.config.discord_params['DISCORD_GUILD']
+        guild = discord.utils.get(self.bot.guilds, name=guild_name)
+        if guild:
+            self.logger.info(
+                f'{self.bot.user.name} has connected to the following guild:\n'
+                f'{guild.name}(id: {guild.id})'
+            )
+            members = '\n - '.join([member.name for member in guild.members])
+            self.logger.info(f'Guild members:\n - {members}')
 
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
         if message.content == "help":
-            response = "Testing 1 2 3"
-            await message.channel.send(response)
-        # Make sure to include this to process commands in messages
-        await self.bot.process_commands(message)
+            await message.channel.send("Testing 1 2 3")
 
-def setup(bot):
-    bot.add_cog(GeneralEvents(bot))
+
+def setup(bot, config):  # Adjust the setup function to receive config
+    logging.getLogger(__name__).info("Setting up General Events...")
+    bot.add_cog(GeneralEvents(bot, config))
+    logging.getLogger(__name__).info("General Events setup complete.")
