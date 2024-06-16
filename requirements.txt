@@ -1,3 +1,5 @@
-py-discord~=2.5.0
 gql~=3.5.0
+py-cord~=2.5.0
 python-dotenv~=1.0.1
+requests~=2.32.3
+requests-toolbelt~=1.0.0
