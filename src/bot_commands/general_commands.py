@@ -1,6 +1,8 @@
 from discord.ext import commands
+import logging
 
-class GeneralCommands(commands.Cog):
+
+class GeneralCommands(commands.Cog, name="General Commands"):
     def __init__(self, bot):
         self.bot = bot
 
@@ -10,4 +12,6 @@ class GeneralCommands(commands.Cog):
 
 
 def setup(bot):
+    logging.getLogger(__name__).info("Setting up General Commands...")
     bot.add_cog(GeneralCommands(bot))
+    logging.getLogger(__name__).info("General Commands setup complete.")
